@@ -30,21 +30,5 @@
         android:id="@+id/temp_options"
         android:name="com.junlin.timeregy.ui.temp_options.TempOptionsFragment"
         android:label="fragment_temp_options"
-        tools:layout="@layout/fragment_temp_options" >
-        <action
-            android:id="@+id/action_temp_options_to_temp_settings"
-            app:destination="@id/temp_settings" />
-        <action
-            android:id="@+id/action_temp_options_to_nav_home"
-            app:destination="@id/nav_home" />
-    </fragment>
-    <fragment
-        android:id="@+id/temp_settings"
-        android:name="com.junlin.timeregy.ui.temp_settings.TempSettingsFragment"
-        android:label="fragment_temp_settings"
-        tools:layout="@layout/fragment_temp_settings" >
-        <action
-            android:id="@+id/action_temp_settings_to_temp_options"
-            app:destination="@id/temp_options" />
-    </fragment>
+        tools:layout="@layout/fragment_temp_options" />
 </navigation>

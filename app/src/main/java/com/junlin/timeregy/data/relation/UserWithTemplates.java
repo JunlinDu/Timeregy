@@ -1,4 +1,4 @@
-package com.junlin.timeregy.data.entity;
+package com.junlin.timeregy.data.relation;
 
 import androidx.room.Embedded;
 import androidx.room.Relation;

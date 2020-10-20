@@ -10,6 +10,35 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="interval">Interval</string>
+    <string name="set_interval">Set Intervals</string>
+    <string name="non_interval">Non-Interval</string>
+
+    <string name="work_time">Work Time</string>
+    <string name="interval_time">Rest Time</string>
+    <string name="total_rounds">Total Rounds</string>
+    <string name="Duration">Duration</string>
+
+    <string name="title_pomodoro">Pomodoro Timer</string>
+    <string name="title_deep_focus">Deep Focus Timer</string>
+    <string name="title_hiit">HIIT Timer</string>
+    <string name="title_mindfulness">Mindfulness Timer</string>
+    <string name="title_custom">Custom Timer</string>
+
+    <string name="desc_pomodoro">Create a Custom Pomodoro Timer to boost your productivity</string>
+    <string name="desc_deep_focus">Customize your deep focus timer to have your next few hours well-spent</string>
+    <string name="desc_hiit">Customize your High Intensity Interval Training &amp; get the most out of your workouts</string>
+    <string name="desc_mindfulness">Meditate and stay in your state of Zen!</string>
+    <string name="desc_custom">Fully customize your timer template to meet your purpose</string>
+
+    <string name="timer_name_hint">Timer  Name</string>
+
+    <string name="tag_title">Tags</string>
+    <string name="tag_none">None</string>
+    <string name="tag_study">Study</string>
+    <string name="tag_workout">Workout</string>
+    <string name="tag_mindfulness">Mindfulness</string>
+
 </resources>

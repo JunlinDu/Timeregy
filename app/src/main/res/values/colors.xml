@@ -7,4 +7,7 @@
     <color name="colorAccentDeepest">#831efc</color>
     <color name="textColor">#ffffff</color>
     <color name="activityBackground">#2f2f2f</color>
+    <color name="menu_item">#1e1e1e</color>
+    <color name="side_note">#a5a5a5</color>
+    <color name="text_input_field">#484848</color>
 </resources>

@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "user")
@@ -14,5 +15,13 @@ public class User {
     @ColumnInfo(name = "user_name")
     public String userName;
 
-    public Bitmap profile;
+    @Ignore
+    public User(String userName) {
+        this.userName = userName;
+    }
+
+    public User(int uid, String userName) {
+        this.uid = uid;
+        this.userName = userName;
+    }
 }
