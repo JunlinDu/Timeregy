@@ -5,9 +5,14 @@
     <color name="colorAccent">#BE8BFC</color>
     <color name="colorAccentDeeper">#9c4aff</color>
     <color name="colorAccentDeepest">#831efc</color>
+    <color name="colorSelected">#282330</color>
     <color name="textColor">#ffffff</color>
     <color name="activityBackground">#2f2f2f</color>
     <color name="menu_item">#1e1e1e</color>
     <color name="side_note">#a5a5a5</color>
     <color name="text_input_field">#484848</color>
+    <color name="study_tag">#35492c</color>
+    <color name="workout_tag">#5c3530</color>
+    <color name="mindfulness_tag">#313e62</color>
+    <color name="none_tag">#353237</color>
 </resources>

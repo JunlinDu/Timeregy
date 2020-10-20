@@ -1,314 +1,468 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <androidx.constraintlayout.widget.ConstraintLayout
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/text_input_name_parent"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="32dp"
-            android:layout_marginTop="16dp"
-            app:counterEnabled="true"
-            app:counterMaxLength="20"
-            app:endIconMode="clear_text"
-            app:counterTextColor="@color/textColor"
-            android:hint="@string/timer_name_hint"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            >
-            <!--app:boxBackgroundMode="filled"
-            app:boxBackgroundColor="@color/text_input_field"-->
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/text_input_edit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/white"
-                app:errorEnabled="true"/>
-        </com.google.android.material.textfield.TextInputLayout>
+        android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/intervals_constraint"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="32dp"
-            app:layout_constraintTop_toBottomOf="@+id/text_input_name_parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent">
-
-            <TextView
-                android:id="@+id/interval_section_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                android:text="@string/interval"
-                android:textColor="@color/side_note"/>
-
-            <TextView
-                android:id="@+id/checkbox_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/interval_section_text"
-                app:layout_constraintLeft_toLeftOf="parent"
-                android:text="@string/set_interval"
-                android:textSize="20sp"
-                />
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBaseline_toBaselineOf="@+id/checkbox_text"
-                app:layout_constraintRight_toRightOf="parent"
-                android:buttonTint="@color/colorAccentDeeper"
-                />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/work_time_constraint"
-            android:layout_width="168dp"
-            android:layout_height="144dp"
-            android:layout_marginVertical="16dp"
-            android:layout_marginStart="32dp"
-            android:background="@drawable/card_layout"
-            app:layout_constraintTop_toBottomOf="@+id/intervals_constraint"
-            app:layout_constraintLeft_toLeftOf="parent">
-            <ImageView
-                android:layout_width="128dp"
-                android:layout_height="96dp"
-                android:layout_marginTop="32dp"
-                android:layout_marginBottom="16dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                android:layout_marginHorizontal="16dp"
-                android:src="@drawable/work_chart"/>
-            <TextView
-                android:id="@+id/work_time_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/side_note"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:text="@string/work_time"
-                android:textSize="16sp"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/work_time_title"
-                app:layout_constraintLeft_toLeftOf="parent"
-                tools:text="25"
-                android:textSize="36sp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/interval_time_constraint"
-            android:layout_width="168dp"
-            android:layout_height="144dp"
-            android:layout_marginVertical="16dp"
-            android:layout_marginEnd="32dp"
-            android:background="@drawable/card_layout"
-            app:layout_constraintTop_toBottomOf="@+id/intervals_constraint"
-            app:layout_constraintRight_toRightOf="parent">
-            <ImageView
-                android:layout_width="128dp"
-                android:layout_height="96dp"
-                android:layout_marginTop="32dp"
-                android:layout_marginBottom="16dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                android:layout_marginHorizontal="16dp"
-                android:src="@drawable/interval_chart"/>
-            <TextView
-                android:id="@+id/interval_time_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:textColor="@color/side_note"
-                android:text="@string/interval_time"
-                android:textSize="16sp"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/interval_time_title"
-                app:layout_constraintLeft_toLeftOf="parent"
-                tools:text="5"
-                android:textSize="36sp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/round_constraint"
-            android:layout_width="352dp"
-            android:layout_height="80dp"
-            android:layout_marginVertical="16dp"
-            android:layout_marginHorizontal="32dp"
-            android:background="@drawable/card_layout"
-            app:layout_constraintTop_toBottomOf="@+id/work_time_constraint"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent">
-            <ImageView
-                android:layout_width="320dp"
-                android:layout_height="32dp"
-                android:layout_marginTop="40dp"
-                android:layout_marginBottom="16dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                android:layout_marginHorizontal="16dp"
-                android:src="@drawable/round_chart"/>
-            <TextView
-                android:id="@+id/round_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:textColor="@color/side_note"
-                android:text="@string/total_rounds"
-                android:textSize="16sp"
-                />
-            <TextView
-                android:id="@+id/total_rounds"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintLeft_toRightOf="@+id/round_title"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="5"
-                android:textSize="36sp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="2dp"/>
-            <TextView
-                android:id="@+id/duration"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="300"
-                android:textSize="20sp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="14dp"/>
-            <TextView
-                android:id="@+id/round_duration_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/side_note"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/duration"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="16dp"
-                android:text="@string/Duration"
-                android:textSize="16sp"
-                />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-        <!--<com.google.android.material.button.MaterialButtonToggleGroup
-            android:id="@+id/toggleButton_group"
-            app:singleSelection="true"
-            app:selectionRequired="true"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <Button
-                android:id="@+id/button1"
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_name_parent"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginTop="16dp"
+                android:hint="@string/timer_name_hint"
+                app:counterEnabled="true"
+                app:counterMaxLength="20"
+                app:counterTextColor="@color/textColor"
+                app:endIconMode="clear_text"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+                <!--app:boxBackgroundMode="filled"
+                app:boxBackgroundColor="@color/text_input_field"-->
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/text_input_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
+                    app:errorEnabled="true" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/intervals_constraint"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="32dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_input_name_parent">
+
+                <TextView
+                    android:id="@+id/interval_section_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/interval"
+                    android:textColor="@color/side_note"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/checkbox_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/set_interval"
+                    android:textSize="20sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/interval_section_text" />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/colorAccentDeeper"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/checkbox_text"
+                    app:layout_constraintRight_toRightOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/work_time_constraint"
+                android:layout_width="168dp"
+                android:layout_height="144dp"
+                android:layout_marginVertical="16dp"
+                android:layout_marginStart="32dp"
+                android:background="@drawable/card_layout"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/intervals_constraint">
+
+                <ImageView
+                    android:layout_width="128dp"
+                    android:layout_height="96dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginBottom="16dp"
+                    android:src="@drawable/work_chart"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/work_time_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/work_time"
+                    android:textColor="@color/side_note"
+                    android:textSize="16sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:textSize="36sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/work_time_title"
+                    tools:text="25" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/interval_time_constraint"
+                android:layout_width="168dp"
+                android:layout_height="144dp"
+                android:layout_marginVertical="16dp"
+                android:layout_marginEnd="32dp"
+                android:background="@drawable/card_layout"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/intervals_constraint">
+
+                <ImageView
+                    android:layout_width="128dp"
+                    android:layout_height="96dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginBottom="16dp"
+                    android:src="@drawable/interval_chart"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/interval_time_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/interval_time"
+                    android:textColor="@color/side_note"
+                    android:textSize="16sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:textSize="36sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/interval_time_title"
+                    tools:text="5" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/round_constraint"
+                android:layout_width="352dp"
+                android:layout_height="80dp"
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginVertical="16dp"
+                android:background="@drawable/card_layout"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/work_time_constraint">
+
+                <ImageView
+                    android:layout_width="320dp"
+                    android:layout_height="32dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginBottom="16dp"
+                    android:src="@drawable/round_chart"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/round_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/total_rounds"
+                    android:textColor="@color/side_note"
+                    android:textSize="16sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/total_rounds"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="2dp"
+                    android:textSize="36sp"
+                    app:layout_constraintLeft_toRightOf="@+id/round_title"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="5" />
+
+                <TextView
+                    android:id="@+id/duration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:layout_marginEnd="16dp"
+                    android:textSize="20sp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="300" />
+
+                <TextView
+                    android:id="@+id/round_duration_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="@string/Duration"
+                    android:textColor="@color/side_note"
+                    android:textSize="16sp"
+                    app:layout_constraintRight_toLeftOf="@+id/duration"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <!--<com.google.android.material.button.MaterialButtonToggleGroup
+                android:id="@+id/toggleButton_group"
+                app:singleSelection="true"
+                app:selectionRequired="true"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/button1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Button 1"
+                    style="?attr/materialButtonOutlinedStyle"
+                    />
+                <Button
+                    android:id="@+id/button2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Button 2"
+                    style="?attr/materialButtonOutlinedStyle"
+                    />
+                <Button
+                    android:id="@+id/button3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Button 3"
+                    style="?attr/materialButtonOutlinedStyle"
+                    />
+            </com.google.android.material.button.MaterialButtonToggleGroup>-->
+
+            <TextView
+                android:id="@+id/tag_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Button 1"
-                style="?attr/materialButtonOutlinedStyle"
-                />
-            <Button
-                android:id="@+id/button2"
+                android:layout_marginStart="48dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/tag_title"
+                android:textColor="@color/side_note"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/round_constraint" />
+
+            <RadioGroup
+                android:id="@+id/tags_group"
+                android:layout_width="0dp"
+                android:layout_height="32dp"
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginTop="4dp"
+                android:orientation="horizontal"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tag_title">
+
+                <RadioButton
+                    android:id="@id/none"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:background="@color/none_tag"
+                    android:text="@string/tag_none" />
+
+                <RadioButton
+                    android:id="@+id/study"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/study_tag"
+                    android:text="@string/tag_study" />
+
+                <RadioButton
+                    android:id="@+id/workout"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.2"
+                    android:background="@color/workout_tag"
+                    android:text="@string/tag_workout" />
+
+                <RadioButton
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.6"
+                    android:background="@color/mindfulness_tag"
+                    android:text="@string/tag_mindfulness" />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/timer_interruptions_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Button 2"
-                style="?attr/materialButtonOutlinedStyle"
-                />
-            <Button
-                android:id="@+id/button3"
+                android:layout_marginStart="48dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/interruptions_title"
+                android:textColor="@color/side_note"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tags_group" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/keeps_running_card"
+                android:layout_marginTop="8dp"
+                android:layout_width="88dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/timer_interruptions_title"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:background="@drawable/card_layout_square_selected"
+                android:layout_marginStart="24dp">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:textColor="@color/side_note"
+                    android:layout_marginStart="9dp"
+                    android:layout_marginVertical="8dp"
+                    android:text="@string/interruptions_keeps_running"/>
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:src="@drawable/ic_baseline_check_circle_24"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/pause_card"
+                android:layout_marginTop="8dp"
+                android:layout_width="128dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/timer_interruptions_title"
+                app:layout_constraintLeft_toRightOf="@id/keeps_running_card"
+                android:background="@drawable/card_layout_square"
+                android:layout_marginStart="8dp">
+                <TextView
+                    android:layout_width="116dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:textColor="@color/side_note"
+                    android:layout_marginStart="9dp"
+                    android:layout_marginVertical="8dp"
+                    android:text="@string/interruptions_pasue"/>
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    tools:src="@drawable/ic_baseline_check_circle_24"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cancel_card"
+                android:layout_marginTop="8dp"
+                android:layout_width="128dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/timer_interruptions_title"
+                app:layout_constraintLeft_toRightOf="@id/pause_card"
+                app:layout_constraintRight_toRightOf="parent"
+                android:background="@drawable/card_layout_square"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="24dp">
+                <TextView
+                    android:layout_width="116dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:textColor="@color/side_note"
+                    android:layout_marginStart="9dp"
+                    android:layout_marginVertical="8dp"
+                    android:text="@string/interruptions_cancel"/>
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/remarks_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Button 3"
-                style="?attr/materialButtonOutlinedStyle"
-                />
-        </com.google.android.material.button.MaterialButtonToggleGroup>-->
+                android:layout_marginStart="48dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/remarks_title"
+                android:textColor="@color/side_note"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cancel_card" />
 
-        <TextView
-            android:id="@+id/tag_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="48dp"
-            android:layout_marginTop="16dp"
-            android:text="@string/tag_title"
-            android:textColor="@color/side_note"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/round_constraint"/>
-
-        <RadioGroup
-            android:layout_width="0dp"
-            android:layout_height="32dp"
-            android:orientation="horizontal"
-            android:layout_marginTop="4dp"
-            android:layout_marginHorizontal="32dp"
-            app:layout_constraintTop_toBottomOf="@id/tag_title"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent">
-            <RadioButton
-                android:id="@id/none"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/user_remarks"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:checked="true"
-                android:text="@string/tag_none"
-                android:layout_weight="1"/>
-            <RadioButton
-                android:id="@+id/study"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:text="@string/tag_study"
-                android:layout_weight="1"/>
-            <RadioButton
-                android:id="@+id/workout"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:text="@string/tag_workout"
-                android:layout_weight="1.2"/>
-            <RadioButton
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:text="@string/tag_mindfulness"
-                android:layout_weight="1.6"/>
-        </RadioGroup>
+                android:layout_height="wrap_content"
+                app:counterEnabled="true"
+                app:counterMaxLength="200"
+                app:layout_constraintTop_toBottomOf="@+id/remarks_title"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="96dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginHorizontal="32dp">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/fab_margin"
-            app:srcCompat="@drawable/ic_baseline_add_24"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:overScrollMode="always"
+                    android:padding="8dp"
+                    android:scrollbarStyle="insideInset"
+                    android:scrollbars="vertical"
+                    android:hint="@string/remarks_hint"
+                    android:textSize="12sp"
+                    android:textColorHint="@color/side_note"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
 
-</ScrollView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        app:srcCompat="@drawable/ic_baseline_check_24" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

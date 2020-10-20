@@ -41,4 +41,11 @@
     <string name="tag_workout">Workout</string>
     <string name="tag_mindfulness">Mindfulness</string>
 
+    <string name="interruptions_title">Timer Interruptions</string>
+    <string name="interruptions_keeps_running">Keeps Running</string>
+    <string name="interruptions_pasue">Pause Timer\non Switching App</string>
+    <string name="interruptions_cancel">Cancel Timer\non Switching App</string>
+
+    <string name="remarks_title">Remarks</string>
+    <string name="remarks_hint">Your Message to Yourself</string>
 </resources>
