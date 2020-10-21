@@ -24,14 +24,21 @@ public class TimeDialogFragment extends AppCompatDialogFragment {
 
     private TimerDialogFragmentListener listener;
 
+    int hours;
+    int minutes;
+    int seconds;
+    int id;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
 
         assert bundle != null;
-        int a = bundle.getInt("seconds");
-        Log.e(TAG, String.valueOf(a));
+        this.hours = bundle.getInt("hours");
+        this.minutes = bundle.getInt("minutes");
+        this.seconds = bundle.getInt("seconds");
+        this.id = bundle.getInt("id");
     }
 
     @Override

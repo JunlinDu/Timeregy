@@ -3,9 +3,9 @@ package com.junlin.timeregy.data.enums;
 import java.util.HashMap;
 
 public enum Interruptions {
-    KEEPRUNNING(1),
-    PAUSETIMER(2),
-    CANCELTIMER(3),
+    KEEPRUNNING(0),
+    PAUSETIMER(1),
+    CANCELTIMER(2),
     UNKNOWN(-1);
 
     private final Integer value;
