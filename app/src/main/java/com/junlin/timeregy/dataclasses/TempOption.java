@@ -1,17 +1,40 @@
 package com.junlin.timeregy.dataclasses;
 
-public class TempOptions {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class TempOption implements Parcelable {
     private int titleRes;
     private int descRes;
     private int imgRes;
     private Boolean Interval;
 
-    public TempOptions(int titleRes, int descRes, int imgRes, Boolean interval) {
+    public TempOption(int titleRes, int descRes, int imgRes, Boolean interval) {
         this.titleRes = titleRes;
         this.descRes = descRes;
         this.imgRes = imgRes;
         Interval = interval;
     }
+
+    protected TempOption(Parcel in) {
+        titleRes = in.readInt();
+        descRes = in.readInt();
+        imgRes = in.readInt();
+        byte tmpInterval = in.readByte();
+        Interval = tmpInterval == 0 ? null : tmpInterval == 1;
+    }
+
+    public static final Creator<TempOption> CREATOR = new Creator<TempOption>() {
+        @Override
+        public TempOption createFromParcel(Parcel in) {
+            return new TempOption(in);
+        }
+
+        @Override
+        public TempOption[] newArray(int size) {
+            return new TempOption[size];
+        }
+    };
 
     public int getTitleRes() {
         return titleRes;
@@ -43,5 +66,18 @@ public class TempOptions {
 
     public void setInterval(Boolean interval) {
         Interval = interval;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(titleRes);
+        dest.writeInt(descRes);
+        dest.writeInt(imgRes);
+        dest.writeByte((byte) (Interval == null ? 0 : Interval ? 1 : 2));
     }
 }

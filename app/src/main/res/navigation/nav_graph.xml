@@ -28,6 +28,6 @@
     <fragment
         android:id="@+id/temp_options"
         android:name="com.junlin.timeregy.ui.temp_options.TempOptionsFragment"
-        android:label="fragment_temp_options"
+        android:label="@string/option_items"
         tools:layout="@layout/fragment_temp_options" />
 </navigation>
