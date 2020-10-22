@@ -4,24 +4,47 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class TempOption implements Parcelable {
-    private int titleRes;
-    private int descRes;
-    private int imgRes;
-    private Boolean Interval;
+    public int titleRes;
+    public int descRes;
+    public int imgRes;
+    public Boolean Interval;
+    public int workMin;
+    public int workSec;
+    public int restMin;
+    public int resSec;
+    public int rounds;
+    public int duration;
+    public int tag;
+    public int interruptions;
 
-    public TempOption(int titleRes, int descRes, int imgRes, Boolean interval) {
+    public TempOption(int titleRes, int descRes, int imgRes, Boolean interval, int workMin, int workSec, int restMin, int resSec, int rounds, int tag, int interruptions) {
         this.titleRes = titleRes;
         this.descRes = descRes;
         this.imgRes = imgRes;
-        Interval = interval;
+        this.Interval = interval;
+        this.workMin = workMin;
+        this.workSec = workSec;
+        this.restMin = restMin;
+        this.resSec = resSec;
+        this.rounds = rounds;
+        this.tag = tag;
+        this.interruptions = interruptions;
+        this.duration = (workMin + restMin) * rounds + (workSec + resSec) * rounds / 60;
     }
 
     protected TempOption(Parcel in) {
         titleRes = in.readInt();
         descRes = in.readInt();
-        imgRes = in.readInt();
         byte tmpInterval = in.readByte();
         Interval = tmpInterval == 0 ? null : tmpInterval == 1;
+        workMin = in.readInt();
+        workSec = in.readInt();
+        restMin = in.readInt();
+        resSec = in.readInt();
+        rounds = in.readInt();
+        duration = in.readInt();
+        tag  = in.readInt();
+        interruptions = in.readInt();
     }
 
     public static final Creator<TempOption> CREATOR = new Creator<TempOption>() {
@@ -36,38 +59,6 @@ public class TempOption implements Parcelable {
         }
     };
 
-    public int getTitleRes() {
-        return titleRes;
-    }
-
-    public int getDescRes() {
-        return descRes;
-    }
-
-    public int getImgRes() {
-        return imgRes;
-    }
-
-    public Boolean getInterval() {
-        return Interval;
-    }
-
-    public void setTitleRes(int titleRes) {
-        this.titleRes = titleRes;
-    }
-
-    public void setDescRes(int descRes) {
-        this.descRes = descRes;
-    }
-
-    public void setImgRes(int imgRes) {
-        this.imgRes = imgRes;
-    }
-
-    public void setInterval(Boolean interval) {
-        Interval = interval;
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -77,7 +68,14 @@ public class TempOption implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(titleRes);
         dest.writeInt(descRes);
-        dest.writeInt(imgRes);
         dest.writeByte((byte) (Interval == null ? 0 : Interval ? 1 : 2));
+        dest.writeInt(workMin);
+        dest.writeInt(workSec);
+        dest.writeInt(restMin);
+        dest.writeInt(resSec);
+        dest.writeInt(rounds);
+        dest.writeInt(duration);
+        dest.writeInt(tag);
+        dest.writeInt(interruptions);
     }
 }

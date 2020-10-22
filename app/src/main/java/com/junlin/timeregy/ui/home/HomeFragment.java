@@ -1,6 +1,7 @@
 package com.junlin.timeregy.ui.home;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,8 @@ import com.junlin.timeregy.dataclasses.TempOption;
 import java.util.ArrayList;
 
 public class HomeFragment extends Fragment {
+
+    public static final String TAG = HomeFragment.class.getSimpleName();
 
     private HomeViewModel homeViewModel;
     private TimeregyDatabase database;
@@ -50,5 +53,11 @@ public class HomeFragment extends Fragment {
                 navController.navigate(R.id.action_nav_home_to_temp_options);
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.i(TAG, "Resumed");
     }
 }

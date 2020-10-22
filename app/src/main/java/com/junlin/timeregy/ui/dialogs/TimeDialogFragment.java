@@ -24,20 +24,14 @@ public class TimeDialogFragment extends AppCompatDialogFragment {
 
     private TimerDialogFragmentListener listener;
 
-    int hours;
-    int minutes;
-    int seconds;
+    Bundle bundle;
     int id;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bundle bundle = getArguments();
-
+        bundle = getArguments();
         assert bundle != null;
-        this.hours = bundle.getInt("hours");
-        this.minutes = bundle.getInt("minutes");
-        this.seconds = bundle.getInt("seconds");
         this.id = bundle.getInt("id");
     }
 
@@ -52,7 +46,7 @@ public class TimeDialogFragment extends AppCompatDialogFragment {
         View view = inflater.inflate(R.layout.fragment_time_dialog, null);
 
         hoursPicker = view.findViewById(R.id.hours_picker);
-        setNumberPicker(hoursPicker, 0, 12, TimerPicker.HOURS);
+        setNumberPicker(hoursPicker, 0, 3, TimerPicker.HOURS);
         minutesPicker = view.findViewById(R.id.minutes_picker);
         setNumberPicker(minutesPicker, 0, 59, TimerPicker.MINUTES);
         secondsPicker = view.findViewById(R.id.seconds_picker);
@@ -68,7 +62,7 @@ public class TimeDialogFragment extends AppCompatDialogFragment {
                         String seconds;
                         if (calculateSec(secondsPicker.getValue()) == 0) seconds = String.valueOf(secondsPicker.getValue());
                         else seconds = "0";
-                        listener.setTexts(minutes, seconds);
+                        listener.setTexts(minutes, seconds, id);
                     }
                 })
                 .setNegativeButton(R.string.dialog_negative, new DialogInterface.OnClickListener() {
@@ -99,7 +93,7 @@ public class TimeDialogFragment extends AppCompatDialogFragment {
         });
         switch (tp) {
             case SECONDS:
-                picker.setValue(15);
+                picker.setValue(bundle.getInt("seconds"));
                 picker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
                     @Override
                     public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
@@ -111,7 +105,7 @@ public class TimeDialogFragment extends AppCompatDialogFragment {
                 });
                 break;
             case MINUTES:
-                picker.setValue(5);
+                picker.setValue(bundle.getInt("minutes"));
                 picker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
                     @Override
                     public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
@@ -120,6 +114,7 @@ public class TimeDialogFragment extends AppCompatDialogFragment {
                 });
                 break;
             case HOURS:
+                picker.setValue(bundle.getInt("hours"));
                 picker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
                     @Override
                     public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
@@ -150,6 +145,6 @@ public class TimeDialogFragment extends AppCompatDialogFragment {
     }
 
     public interface TimerDialogFragmentListener{
-        void setTexts(String minutes, String seconds);
+        void setTexts(String minutes, String seconds, int id);
     }
 }

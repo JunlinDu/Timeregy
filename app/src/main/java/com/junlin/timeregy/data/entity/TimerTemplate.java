@@ -35,8 +35,6 @@ public class TimerTemplate {
 
     public String remark;
 
-    public String description;
-
     @ColumnInfo(name = "date_created")
     public Date dateCreated;
 

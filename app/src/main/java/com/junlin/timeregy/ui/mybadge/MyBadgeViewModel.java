@@ -1,16 +1,16 @@
-package com.junlin.timeregy.ui.slideshow;
+package com.junlin.timeregy.ui.mybadge;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class SlideshowViewModel extends ViewModel {
+public class MyBadgeViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public SlideshowViewModel() {
+    public MyBadgeViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is slideshow fragment");
+        mText.setValue("This is My Badge fragment");
     }
 
     public LiveData<String> getText() {

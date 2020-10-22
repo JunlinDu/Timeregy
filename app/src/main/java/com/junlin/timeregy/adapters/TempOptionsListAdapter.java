@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.junlin.timeregy.ConfigTimerActivity;
 import com.junlin.timeregy.R;
 import com.junlin.timeregy.dataclasses.TempOption;
+import com.junlin.timeregy.ui.temp_options.TempOptionsFragment;
 
 import java.util.ArrayList;
 
@@ -67,11 +69,11 @@ public class TempOptionsListAdapter extends RecyclerView.Adapter<TempOptionsList
         }
 
         void bind(final TempOption tempOption) {
-            titleText.setText(tempOption.getTitleRes());
-            descText.setText(tempOption.getDescRes());
-            if (tempOption.getInterval()) sideNoteText.setText(R.string.interval);
+            titleText.setText(tempOption.titleRes);
+            descText.setText(tempOption.descRes);
+            if (tempOption.Interval) sideNoteText.setText(R.string.interval);
             else sideNoteText.setText(R.string.non_interval);
-            profileImage.setImageResource(tempOption.getImgRes());
+            profileImage.setImageResource(tempOption.imgRes);
             parentLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

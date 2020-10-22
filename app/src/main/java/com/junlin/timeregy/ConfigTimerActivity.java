@@ -6,11 +6,14 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -19,7 +22,10 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.junlin.timeregy.data.TimeregyDatabase;
 import com.junlin.timeregy.data.enums.Interruptions;
+import com.junlin.timeregy.data.enums.Tags;
+import com.junlin.timeregy.dataclasses.TempOption;
 import com.junlin.timeregy.ui.dialogs.TimeDialogFragment;
+import com.junlin.timeregy.ui.home.HomeFragment;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -48,6 +54,7 @@ public class ConfigTimerActivity extends AppCompatActivity implements TimeDialog
     ConstraintLayout roundCard;
     // TextView which holds the number of rounds
     TextView roundsText;
+    TextView durationText;
 
     RadioGroup tags;
 
@@ -58,6 +65,8 @@ public class ConfigTimerActivity extends AppCompatActivity implements TimeDialog
     TextInputEditText userRemarks;
     FloatingActionButton createFab;
 
+    TempOption tempOption;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +74,9 @@ public class ConfigTimerActivity extends AppCompatActivity implements TimeDialog
 
         // getting a database instance
         tDb = TimeregyDatabase.getAppDatabase(getApplicationContext());
+
+        Intent intent = getIntent();
+        tempOption = (TempOption) intent.getParcelableExtra("Data");
 
         // stop soft keyboard from showing automatically when focus is changed
         // reference: https://stackoverflow.com/questions/5221622/how-to-stop-soft-keyboard-showing-automatically-when-focus-is-changed-onstart-e/5484683
@@ -75,13 +87,19 @@ public class ConfigTimerActivity extends AppCompatActivity implements TimeDialog
     }
 
     private void createViews() {
+        timerNameInput = findViewById(R.id.text_input_edit);
+        intervalCheckBox = findViewById(R.id.interval_checkbox);
+        workTimeMinText = findViewById(R.id.work_time_minute_display);
+        workTimeSecText = findViewById(R.id.work_time_second_dis);
+        restTimeMinText = findViewById(R.id.rest_time_minute_display);
+        restTimeSecText = findViewById(R.id.rest_time_second_dis);
+        roundsText = findViewById(R.id.total_rounds);
+        durationText = findViewById(R.id.duration);
         workCard = findViewById(R.id.work_time_constraint);
         restCard = findViewById(R.id.interval_time_constraint);
-        intervalCheckBox = findViewById(R.id.interval_checkbox);
-        timerNameInput = findViewById(R.id.text_input_edit);
         roundCard = findViewById(R.id.round_constraint);
+        tags = findViewById(R.id.tags_group);
         userRemarks = findViewById(R.id.user_remarks_input);
-        createFab = findViewById(R.id.fab);
         interruptionsCards.add((ConstraintLayout) findViewById(R.id.keeps_running_card));
         interruptionsCards.add((ConstraintLayout) findViewById(R.id.pause_card));
         interruptionsCards.add((ConstraintLayout) findViewById(R.id.cancel_card));
@@ -93,43 +111,90 @@ public class ConfigTimerActivity extends AppCompatActivity implements TimeDialog
             if (i != 0) intCardImages.get(i).setVisibility(View.INVISIBLE);
         }
 
-        // Getting the selected index of a RadioGroup in Android:
-        // https://stackoverflow.com/questions/6440259/how-to-get-the-selected-index-of-a-radiogroup-in-android
-        tags = findViewById(R.id.tags_group);
+        if (tempOption != null) {
+            timerNameInput.setText(this.tempOption.titleRes);
+            if (this.tempOption.Interval) intervalCheckBox.setChecked(true);
+            workTimeMinText.setText(String.valueOf(this.tempOption.workMin));
+            workTimeSecText.setText(String.valueOf(this.tempOption.workSec));
+            restTimeMinText.setText(String.valueOf(this.tempOption.restMin));
+            restTimeSecText.setText(String.valueOf(this.tempOption.resSec));
+            roundsText.setText(String.valueOf(this.tempOption.rounds));
+            durationText.setText(String.valueOf(this.tempOption.duration));
+            RadioButton rb = (RadioButton) tags.getChildAt(this.tempOption.tag - 1);
+            rb.setChecked(true);
+            setInterrupationCard(interruptionsCards.get(this.tempOption.interruptions), this.tempOption.interruptions);
+        }
+
+        createFab = findViewById(R.id.fab);
+
+        createFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onCreateFabPressed();
+            }
+        });
+
         workCard.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                openSetWorkTimeDialog(1,1,1,0);
+                int[] time = convertTime(workTimeMinText.getText().toString(), workTimeSecText.getText().toString());
+                openSetWorkTimeDialog(time[0], time[1], time[2], 0);
             }
         });
+
         restCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (intervalCheckBox.isChecked()) {
-                    openSetWorkTimeDialog(1,2,3,1);
+                    int[] time = convertTime(restTimeMinText.getText().toString(), restTimeSecText.getText().toString());
+                    openSetWorkTimeDialog(time[0], time[1], time[2], 1);
                 }
             }
         });
+
+        intervalCheckBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                restTimeMinText.setText("0");
+                restTimeMinText.setText("0");
+            }
+        });
+    }
+
+    private int[] convertTime(String minutes, String seconds) {
+        int[] timeArray = new int[3];
+        int hrs = Integer.parseInt(minutes) / 60;
+        int mins = Integer.parseInt(minutes) - hrs * 60;
+        int secs = Integer.parseInt(seconds);
+        timeArray[0] = hrs;
+        timeArray[1] = mins;
+        timeArray[2] = secs;
+        return timeArray;
     }
 
     private void setInterruptionCardListener(final ConstraintLayout layout, final int id) {
         layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                currentInterruptionsMode = Interruptions.toInteruptions(id);
-                layout.setBackground(
-                        ContextCompat.getDrawable(ConfigTimerActivity.this, R.drawable.card_layout_square_selected));
-                intCardImages.get(id).setVisibility(View.VISIBLE);
-                for (int i = 0; i < 3; i ++) {
-                    if (i != id) {
-                        interruptionsCards
-                                .get(i)
-                                .setBackground(ContextCompat.getDrawable(ConfigTimerActivity.this, R.drawable.card_layout_square));
-                        intCardImages.get(i).setVisibility(View.INVISIBLE);
-                    }
-                }
+                setInterrupationCard(layout, id);
             }
         });
+    }
+
+    private void setInterrupationCard(ConstraintLayout layout, int id) {
+        layout.setBackground(
+                ContextCompat.getDrawable(ConfigTimerActivity.this, R.drawable.card_layout_square_selected));
+        intCardImages.get(id).setVisibility(View.VISIBLE);
+        currentInterruptionsMode = Interruptions.toInteruptions(id);
+//        Log.i(TAG, currentInterruptionsMode.toString());
+        for (int i = 0; i < 3; i ++) {
+            if (i != id) {
+                interruptionsCards
+                        .get(i)
+                        .setBackground(ContextCompat.getDrawable(ConfigTimerActivity.this, R.drawable.card_layout_square));
+                intCardImages.get(i).setVisibility(View.INVISIBLE);
+            }
+        }
     }
 
     private void openSetWorkTimeDialog(int hours, int minutes, int seconds, int id){
@@ -145,13 +210,26 @@ public class ConfigTimerActivity extends AppCompatActivity implements TimeDialog
     }
 
     private void onCreateFabPressed(){
+        Intent i = new Intent(this, MainActivity.class);
+        i.putExtra("back", 1);
 
+        // Going two activities back without creating new activity instance on the stack,
+        // Reference: https://stackoverflow.com/questions/6722109/going-two-activities-back
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        this.startActivity(i);
         // Close the activity at last
         finish();
     }
 
     @Override
-    public void setTexts(String minutes, String seconds) {
-
+    public void setTexts(String minutes, String seconds, int id) {
+        if (id == 0) {
+            workTimeMinText.setText(minutes);
+            workTimeSecText.setText(seconds);
+        } else {
+            restTimeMinText.setText(minutes);
+            restTimeSecText.setText(seconds);
+        }
     }
 }

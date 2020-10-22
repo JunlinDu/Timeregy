@@ -1,4 +1,4 @@
-package com.junlin.timeregy.ui.gallery;
+package com.junlin.timeregy.ui.mybadge;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,19 +14,18 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.junlin.timeregy.R;
 
-public class GalleryFragment extends Fragment {
+public class MyBadgeFragment extends Fragment {
 
-    private GalleryViewModel galleryViewModel;
+    private MyBadgeViewModel myBadgeViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        galleryViewModel =
-                ViewModelProviders.of(this).get(GalleryViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_gallery, container, false);
+        myBadgeViewModel =
+                ViewModelProviders.of(this).get(MyBadgeViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_slideshow, container, false);
 
-        final TextView textView = root.findViewById(R.id.text_gallery);
-
-        galleryViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        final TextView textView = root.findViewById(R.id.text_slideshow);
+        myBadgeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
