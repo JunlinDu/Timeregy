@@ -2,13 +2,11 @@ package com.junlin.timeregy;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.CheckBox;
@@ -19,17 +17,15 @@ import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 import com.junlin.timeregy.data.TimeregyDatabase;
+import com.junlin.timeregy.data.entity.TimerTemplate;
 import com.junlin.timeregy.data.enums.Interruptions;
 import com.junlin.timeregy.data.enums.Tags;
-import com.junlin.timeregy.dataclasses.TempOption;
+import com.junlin.timeregy.dataclass.TempOption;
 import com.junlin.timeregy.ui.dialogs.TimeDialogFragment;
-import com.junlin.timeregy.ui.home.HomeFragment;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
 public class ConfigTimerActivity extends AppCompatActivity implements TimeDialogFragment.TimerDialogFragmentListener {
     // Tag for logging
@@ -120,7 +116,7 @@ public class ConfigTimerActivity extends AppCompatActivity implements TimeDialog
             restTimeSecText.setText(String.valueOf(this.tempOption.resSec));
             roundsText.setText(String.valueOf(this.tempOption.rounds));
             durationText.setText(String.valueOf(this.tempOption.duration));
-            RadioButton rb = (RadioButton) tags.getChildAt(this.tempOption.tag - 1);
+            RadioButton rb = (RadioButton) tags.getChildAt(this.tempOption.tag);
             rb.setChecked(true);
             setInterrupationCard(interruptionsCards.get(this.tempOption.interruptions), this.tempOption.interruptions);
         }
@@ -210,16 +206,63 @@ public class ConfigTimerActivity extends AppCompatActivity implements TimeDialog
     }
 
     private void onCreateFabPressed(){
-        Intent i = new Intent(this, MainActivity.class);
-        i.putExtra("back", 1);
+        Boolean test = true;
+        if (timerNameInput.getText().toString().equals("")) {
+            timerNameInput.setError(getResources().getString(R.string.empty_string_error));
+            test = false;
+        }
 
-        // Going two activities back without creating new activity instance on the stack,
-        // Reference: https://stackoverflow.com/questions/6722109/going-two-activities-back
-        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        if (test) {
+            createRecord();
+            Intent i = new Intent(this, MainActivity.class);
+            i.putExtra("back", 1);
+            // Going two activities back without creating new activity instance on the stack,
+            // Reference: https://stackoverflow.com/questions/6722109/going-two-activities-back
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-        this.startActivity(i);
-        // Close the activity at last
-        finish();
+            this.startActivity(i);
+            // Close the activity at last
+            finish();
+        }
+    }
+
+    private void createRecord() {
+        // UserId id set to 1 temporarily for testing purpose
+        int uid = 1;
+
+        int workSeconds = toSeconds(workTimeMinText.getText().toString(), workTimeSecText.getText().toString());
+        int restSeconds = toSeconds(restTimeMinText.getText().toString(), restTimeSecText.getText().toString());
+
+        // Reference: https://stackoverflow.com/questions/6440259/how-to-get-the-selected-index-of-a-radiogroup-in-android
+        int rId= tags.getCheckedRadioButtonId();
+        View radioButton = tags.findViewById(rId);
+        Tags tag = Tags.toTag(tags.indexOfChild(radioButton));
+        Date date = new Date();
+        final TimerTemplate timerTemplate =
+                new TimerTemplate(
+                        uid,
+                        timerNameInput.getText().toString(),
+                        intervalCheckBox.isChecked(),
+                        workSeconds,
+                        restSeconds,
+                        Integer.parseInt(roundsText.getText().toString()),
+                        tag,
+                        currentInterruptionsMode,
+                        userRemarks.getText().toString(),
+                        date);
+
+        // This is referenced from https://www.youtube.com/watch?time_continue=223&v=c43ruIIZAMg&feature=emb_logo
+        // this opens a diskIO thread for the database to
+        ThreadExecutor.getInstance().getDiskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                tDb.timerTemplateDAO().inserTemplate(timerTemplate);
+            }
+        });
+    }
+
+    private int toSeconds(String minutes, String seconds) {
+        return Integer.parseInt(minutes) * 60 + Integer.parseInt(seconds);
     }
 
     @Override

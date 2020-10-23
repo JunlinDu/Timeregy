@@ -7,15 +7,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.junlin.timeregy.ConfigTimerActivity;
 import com.junlin.timeregy.R;
-import com.junlin.timeregy.dataclasses.TempOption;
-import com.junlin.timeregy.ui.temp_options.TempOptionsFragment;
+import com.junlin.timeregy.dataclass.TempOption;
 
 import java.util.ArrayList;
 

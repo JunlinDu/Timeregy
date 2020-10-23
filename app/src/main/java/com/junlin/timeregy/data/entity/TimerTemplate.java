@@ -38,4 +38,16 @@ public class TimerTemplate {
     @ColumnInfo(name = "date_created")
     public Date dateCreated;
 
+    public TimerTemplate(int userId, String name, boolean interval, int workTimeInSec, int restTimeInSec, int rounds, Tags tag, Interruptions interruptions, String remark, Date dateCreated) {
+        this.userId = userId;
+        this.name = name;
+        this.interval = interval;
+        this.workTimeInSec = workTimeInSec;
+        this.restTimeInSec = restTimeInSec;
+        this.rounds = rounds;
+        this.tag = tag;
+        this.interruptions = interruptions;
+        this.remark = remark;
+        this.dateCreated = dateCreated;
+    }
 }

@@ -22,7 +22,7 @@ public class MyBadgeFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         myBadgeViewModel =
                 ViewModelProviders.of(this).get(MyBadgeViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_slideshow, container, false);
+        View root = inflater.inflate(R.layout.fragment_mybadges, container, false);
 
         final TextView textView = root.findViewById(R.id.text_slideshow);
         myBadgeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {

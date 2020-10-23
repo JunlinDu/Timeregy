@@ -3,10 +3,10 @@ package com.junlin.timeregy.data.enums;
 import java.util.HashMap;
 
 public enum Tags {
-    NONE(1),
-    STUDY(2),
-    WORKOUT(3),
-    MINDFULNESS(4),
+    NONE(0),
+    STUDY(1),
+    WORKOUT(2),
+    MINDFULNESS(3),
     UNKNOWN(-1);
 
     private final Integer value;

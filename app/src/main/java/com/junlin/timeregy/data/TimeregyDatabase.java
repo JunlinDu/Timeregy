@@ -8,6 +8,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
+import com.junlin.timeregy.data.dao.TimerTemplateDAO;
 import com.junlin.timeregy.data.entity.TimerTemplate;
 import com.junlin.timeregy.data.entity.User;
 import com.junlin.timeregy.data.utility.DateConverter;
@@ -47,5 +48,7 @@ public abstract class TimeregyDatabase extends RoomDatabase {
 
         return database;
     }
+
+    public abstract TimerTemplateDAO timerTemplateDAO();
 
 }
