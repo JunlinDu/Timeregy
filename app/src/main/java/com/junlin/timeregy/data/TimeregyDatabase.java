@@ -12,11 +12,9 @@ import com.junlin.timeregy.data.dao.TimerTemplateDAO;
 import com.junlin.timeregy.data.entity.TimerTemplate;
 import com.junlin.timeregy.data.entity.User;
 import com.junlin.timeregy.data.utility.DateConverter;
-import com.junlin.timeregy.data.utility.InterruptionsConverter;
-import com.junlin.timeregy.data.utility.TagsConverter;
 
 @Database(entities = {User.class, TimerTemplate.class}, version = 3, exportSchema = false)
-@TypeConverters({DateConverter.class, InterruptionsConverter.class, TagsConverter.class})
+@TypeConverters(DateConverter.class)
 public abstract class TimeregyDatabase extends RoomDatabase {
 
     // Tag for logging

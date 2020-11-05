@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.junlin.timeregy.ConfigTimerActivity;
 import com.junlin.timeregy.R;
-import com.junlin.timeregy.dataclass.TempOption;
+import com.junlin.timeregy.data.TempOption;
 
 import java.util.ArrayList;
 
@@ -63,6 +64,7 @@ public class TempOptionsListAdapter extends RecyclerView.Adapter<TempOptionsList
             sideNoteText = itemView.findViewById(R.id.temp_option_sidenote);
             profileImage = itemView.findViewById(R.id.temp_option_profile);
             parentLayout = itemView.findViewById(R.id.option);
+
         }
 
         void bind(final TempOption tempOption) {
@@ -79,6 +81,8 @@ public class TempOptionsListAdapter extends RecyclerView.Adapter<TempOptionsList
                     itemView.getContext().startActivity(intent);
                 }
             });
+
+
         }
     }
 }

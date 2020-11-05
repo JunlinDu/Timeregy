@@ -12,9 +12,9 @@ import android.view.ViewGroup;
 
 import com.junlin.timeregy.R;
 import com.junlin.timeregy.adapters.TempOptionsListAdapter;
+import com.junlin.timeregy.data.TempOption;
 import com.junlin.timeregy.data.enums.Interruptions;
 import com.junlin.timeregy.data.enums.Tags;
-import com.junlin.timeregy.dataclass.TempOption;
 
 import java.util.ArrayList;
 

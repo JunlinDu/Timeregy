@@ -1,5 +1,6 @@
 package com.junlin.timeregy.ui.home;
 
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,9 +10,12 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,6 +27,7 @@ import com.junlin.timeregy.data.TimeregyDatabase;
 import com.junlin.timeregy.data.entity.TimerTemplate;
 
 import java.util.List;
+import java.util.Objects;
 
 public class HomeFragment extends Fragment {
 
@@ -32,7 +37,6 @@ public class HomeFragment extends Fragment {
     private TimeregyDatabase database;
     private NavController navController;
     private UserTempListAdapter tempListAdapter;
-
 
     FloatingActionButton fab;
 
@@ -50,6 +54,23 @@ public class HomeFragment extends Fragment {
         tempListAdapter = new UserTempListAdapter();
         recyclerView.setAdapter(tempListAdapter);
 
+        // Swipe a list item to left to delete the item from the database and from the screen ---DELETE
+        // Reference: https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/ItemTouchHelper.SimpleCallback
+        // and https://www.youtube.com/watch?v=0xbyIuwbyTs&feature=emb_logo
+        ItemTouchHelper mIth = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            @Override
+            public void onSwiped(@NonNull final RecyclerView.ViewHolder viewHolder, int direction) {
+                database.timerTemplateDAO().deleteTemplate(tempListAdapter.getTemplate(viewHolder.getAdapterPosition()));
+            }
+
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+        });
+
+         mIth.attachToRecyclerView(recyclerView);
+         loadAllTemplates();
         return root;
     }
 
@@ -67,37 +88,18 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.i(TAG, "Resumed");
-        loadAllTemplates();
-    }
-
-    // This is learned from https://www.youtube.com/watch?time_continue=240&v=c43ruIIZAMg&feature=emb_logo
-    // Opens a Disk IO thread to load all templates from the database and then in the UI Thread update each
-    // of them to each of the corresponding items in the RecyclerView list.
+    // Loads all templates from the database to the screen.
+    // LiveData is used in here because it observes changes on the database
+    // (observer pattern) and calls the onChanged callback methods every time
+    // changes are bring observed.
+    // Reference: https://www.youtube.com/watch?v=d--4zlipdxU&feature=emb_logo
     private void loadAllTemplates() {
-        ThreadExecutor.getInstance().getDiskIO().execute(new Runnable() {
+        final LiveData<List<TimerTemplate>> templates = database.timerTemplateDAO().retrieveAllTimerTemplates();
+        templates.observe(getViewLifecycleOwner(), new Observer<List<TimerTemplate>>() {
             @Override
-            public void run() {
-                // This has to be final so that the variable can be accessed form inside the UI thread
-                final List<TimerTemplate> templates = database.timerTemplateDAO().retrieveAllTimerTemplates();
-                // Reference: https://stackoverflow.com/questions/16425146/runonuithread-in-fragment
-                //
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        tempListAdapter.insertTemplates(templates);
-                    }
-                });
+            public void onChanged(List<TimerTemplate> timerTemplates) {
+                tempListAdapter.updateTemplates(timerTemplates);
             }
         });
-
-    }
-
-    public void setUpList() {
-        String a  = database.timerTemplateDAO().retrieveAllTimerTemplates().get(0).name;
-        Log.e(TAG, a);
     }
 }

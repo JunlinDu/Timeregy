@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:textSize="24sp"
+        android:textSize="16sp"
         android:layout_marginStart="8dp"
         android:textStyle="bold"
         tools:text="Pomodoro!"
@@ -94,8 +94,8 @@
 
     <Button
         android:id="@+id/temp_start_button"
-        android:layout_width="80dp"
-        android:layout_height="32dp"
+        android:layout_width="136dp"
+        android:layout_height="40dp"
         android:layout_marginTop="4dp"
         android:layout_marginStart="16dp"
         android:textSize="12sp"
@@ -104,17 +104,4 @@
         app:layout_constraintTop_toBottomOf="@id/temp_profile"
         app:layout_constraintLeft_toLeftOf="parent" />
 
-    <Button
-        android:id="@+id/temp_view_button"
-        android:layout_width="80dp"
-        android:layout_height="32dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginStart="16dp"
-        android:outlineAmbientShadowColor="@android:color/transparent"
-        android:textSize="12sp"
-        android:backgroundTint="@android:color/transparent"
-        android:textColor="@color/colorAccent"
-        android:text="@string/view_button"
-        app:layout_constraintTop_toBottomOf="@id/temp_profile"
-        app:layout_constraintLeft_toRightOf="@id/temp_start_button" />
 </androidx.constraintlayout.widget.ConstraintLayout>

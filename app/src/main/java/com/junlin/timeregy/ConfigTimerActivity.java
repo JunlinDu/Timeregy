@@ -21,13 +21,14 @@ import com.junlin.timeregy.data.TimeregyDatabase;
 import com.junlin.timeregy.data.entity.TimerTemplate;
 import com.junlin.timeregy.data.enums.Interruptions;
 import com.junlin.timeregy.data.enums.Tags;
-import com.junlin.timeregy.dataclass.TempOption;
+import com.junlin.timeregy.data.TempOption;
 import com.junlin.timeregy.ui.dialogs.TimeDialogFragment;
 
 import java.util.ArrayList;
 import java.util.Date;
 
 public class ConfigTimerActivity extends AppCompatActivity implements TimeDialogFragment.TimerDialogFragmentListener {
+
     // Tag for logging
     private static final String TAG = ConfigTimerActivity.class.getSimpleName();
 
@@ -239,17 +240,12 @@ public class ConfigTimerActivity extends AppCompatActivity implements TimeDialog
         Tags tag = Tags.toTag(tags.indexOfChild(radioButton));
         Date date = new Date();
         final TimerTemplate timerTemplate =
-                new TimerTemplate(
-                        uid,
+                new TimerTemplate(uid,
                         timerNameInput.getText().toString(),
-                        intervalCheckBox.isChecked(),
-                        workSeconds,
-                        restSeconds,
+                        intervalCheckBox.isChecked(), workSeconds, restSeconds,
                         Integer.parseInt(roundsText.getText().toString()),
-                        tag,
-                        currentInterruptionsMode,
-                        userRemarks.getText().toString(),
-                        date);
+                        tag.getValue(), currentInterruptionsMode.getValue(),
+                        userRemarks.getText().toString(), date);
 
         // This is referenced from https://www.youtube.com/watch?time_continue=223&v=c43ruIIZAMg&feature=emb_logo
         // this opens a diskIO thread for the database to

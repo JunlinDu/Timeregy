@@ -1,7 +1,11 @@
 package com.junlin.timeregy.data.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.junlin.timeregy.data.enums.*;
@@ -9,7 +13,7 @@ import com.junlin.timeregy.data.enums.*;
 import java.util.Date;
 
 @Entity(tableName = "timer")
-public class TimerTemplate {
+public class TimerTemplate implements Parcelable {
 
     @PrimaryKey(autoGenerate = true)
     public int id;
@@ -29,16 +33,21 @@ public class TimerTemplate {
 
     public int rounds;
 
-    public Tags tag;
+    public int tag;
 
-    public Interruptions interruptions;
+    public int interruptions;
 
     public String remark;
 
     @ColumnInfo(name = "date_created")
     public Date dateCreated;
 
-    public TimerTemplate(int userId, String name, boolean interval, int workTimeInSec, int restTimeInSec, int rounds, Tags tag, Interruptions interruptions, String remark, Date dateCreated) {
+    @Ignore
+    private boolean showMenu = false;
+
+    public TimerTemplate(int userId, String name, boolean interval, int workTimeInSec,
+                         int restTimeInSec, int rounds, int tag, int interruptions,
+                         String remark, Date dateCreated) {
         this.userId = userId;
         this.name = name;
         this.interval = interval;
@@ -49,5 +58,59 @@ public class TimerTemplate {
         this.interruptions = interruptions;
         this.remark = remark;
         this.dateCreated = dateCreated;
+    }
+
+    protected TimerTemplate(Parcel in) {
+        id = in.readInt();
+        userId = in.readInt();
+        name = in.readString();
+        interval = in.readByte() != 0;
+        workTimeInSec = in.readInt();
+        restTimeInSec = in.readInt();
+        rounds = in.readInt();
+        tag = in.readInt();
+        interruptions = in.readInt();
+        remark = in.readString();
+        showMenu = in.readByte() != 0;
+    }
+
+    public static final Creator<TimerTemplate> CREATOR = new Creator<TimerTemplate>() {
+        @Override
+        public TimerTemplate createFromParcel(Parcel in) {
+            return new TimerTemplate(in);
+        }
+
+        @Override
+        public TimerTemplate[] newArray(int size) {
+            return new TimerTemplate[size];
+        }
+    };
+
+    public boolean isShowMenu() {
+        return showMenu;
+    }
+
+    public void setShowMenu(boolean showMenu) {
+        this.showMenu = showMenu;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeInt(userId);
+        dest.writeString(name);
+        dest.writeByte((byte) (interval ? 1 : 0));
+        dest.writeInt(workTimeInSec);
+        dest.writeInt(restTimeInSec);
+        dest.writeInt(rounds);
+        dest.writeInt(tag);
+        dest.writeInt(interruptions);
+        dest.writeString(remark);
+        dest.writeByte((byte) (showMenu ? 1 : 0));
     }
 }

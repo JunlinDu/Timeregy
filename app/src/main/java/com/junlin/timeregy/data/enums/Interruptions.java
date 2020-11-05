@@ -10,6 +10,7 @@ public enum Interruptions {
 
     private final Integer value;
 
+
     private static final HashMap<Integer, Interruptions> intToInterruptions = new HashMap<>();
     static {
         for (Interruptions interruption : Interruptions.values()) {

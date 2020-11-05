@@ -1,5 +1,6 @@
 package com.junlin.timeregy.adapters;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +11,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.junlin.timeregy.ConfigTimerActivity;
 import com.junlin.timeregy.R;
+import com.junlin.timeregy.TimerActivity;
 import com.junlin.timeregy.data.entity.TimerTemplate;
 import com.junlin.timeregy.data.enums.Tags;
 
@@ -19,12 +22,9 @@ import java.util.List;
 public class UserTempListAdapter extends RecyclerView.Adapter<UserTempListAdapter.ViewHolder> {
 
     public static final String TAG = UserTempListAdapter.class.getSimpleName();
-    public static final String[] TAGSARRAY = new String[]{"None", "Study", "Workout", "Mindfulness"};
+
 
     private List<TimerTemplate> timerTemplates;
-
-    public UserTempListAdapter() {
-    }
 
     @NonNull
     @Override
@@ -41,19 +41,13 @@ public class UserTempListAdapter extends RecyclerView.Adapter<UserTempListAdapte
         holder.bind(template);
     }
 
-    public void insertTemplates(List<TimerTemplate> timerTemplates) {
+    public void updateTemplates(List<TimerTemplate> timerTemplates) {
         this.timerTemplates = timerTemplates;
-        notifyItemRangeInserted(0, this.timerTemplates.size());
+        notifyDataSetChanged();
     }
 
-    public void deleteSingleTemplate(List<TimerTemplate> timerTemplates, int position) {
-        this.timerTemplates = timerTemplates;
-        notifyItemRemoved(position);
-    }
-
-    public void updateSingleTemplate(TimerTemplate template, int position) {
-        this.timerTemplates.set(position, template);
-        notifyItemChanged(position);
+    public TimerTemplate getTemplate(int position) {
+        return this.timerTemplates.get(position);
     }
 
     @Override
@@ -66,8 +60,8 @@ public class UserTempListAdapter extends RecyclerView.Adapter<UserTempListAdapte
         TextView title;
         TextView tag;
         ImageView tagIcon;
+        TextView round;
         Button startButton;
-        Button viewButton;
         ImageView image;
 
         public ViewHolder(@NonNull View itemView) {
@@ -76,31 +70,45 @@ public class UserTempListAdapter extends RecyclerView.Adapter<UserTempListAdapte
             this.title = itemView.findViewById(R.id.temp_title);
             this.tag = itemView.findViewById(R.id.tag_text);
             this.tagIcon = itemView.findViewById(R.id.tag_icon);
+            this.round = itemView.findViewById(R.id.minutes_text);
             this.startButton = itemView.findViewById(R.id.temp_start_button);
-            this.viewButton = itemView.findViewById(R.id.temp_view_button);
             this.image = itemView.findViewById(R.id.template_tag_image);
         }
 
-        void bind(TimerTemplate timerTemplate) {
+        void bind(final TimerTemplate timerTemplate) {
             profileImage.setImageResource(R.drawable.profile);
             title.setText(timerTemplate.name);
-            int tagValue = timerTemplate.tag.getValue();
-            tag.setText(TAGSARRAY[tagValue]);
+            int tagValue = timerTemplate.tag;
+            Tags.setTag(Tags.toTag(tagValue), tagIcon, tag);
+
+            // This is set up temporarily so that image will be displayed for each item
             switch (tagValue) {
                 case 1:
-                    tagIcon.setImageResource(R.drawable.tag_study);
                     image.setImageResource(R.drawable.study_img);
                     break;
                 case 2:
-                    tagIcon.setImageResource(R.drawable.tag_workout);
                     image.setImageResource(R.drawable.workout_img);
                     break;
                 case 3:
-                    tagIcon.setImageResource(R.drawable.tag_mindfulness);
                     image.setImageResource(R.drawable.mindfulness_img);
                     break;
             }
 
+            String roundMin = String.valueOf(calculateMinute(timerTemplate.workTimeInSec, timerTemplate.restTimeInSec, timerTemplate.rounds)) + " mins";
+            round.setText(roundMin);
+            // rounds have not been setup
+            startButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(itemView.getContext(), TimerActivity.class);
+                    intent.putExtra("Data", timerTemplate);
+                    itemView.getContext().startActivity(intent);
+                }
+            });
+        }
+
+        int calculateMinute(int workSec, int restSec, int round) {
+            return (workSec + restSec) * round / 60;
         }
     }
 }

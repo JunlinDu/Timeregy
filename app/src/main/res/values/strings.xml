@@ -58,6 +58,13 @@
 
     <string name="start_button">START</string>
     <string name="view_button">VIEW</string>
+    <string name="pause_button">PAUSE</string>
+    <string name="cancel_button">CANCEL</string>
+
+    <string name="working">Working</string>
+    <string name="resting">Resting</string>
 
     <string name="empty_string_error">Name Cannot be Blank</string>
+    <string name="done">DONE</string>
+    <string name="left">LEFT</string>
 </resources>

@@ -15,4 +15,6 @@
     <color name="workout_tag">#5c3530</color>
     <color name="mindfulness_tag">#313e62</color>
     <color name="none_tag">#353237</color>
+    <color name="rest_color">#00ffa2</color>
+    <color name="rest_color_ligher">#00ffc3</color>
 </resources>

@@ -1,5 +1,6 @@
 package com.junlin.timeregy.data.dao;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -15,7 +16,7 @@ import java.util.List;
 public interface TimerTemplateDAO {
 
     @Query("SELECT * FROM timer ORDER BY id")
-    List<TimerTemplate> retrieveAllTimerTemplates();
+    LiveData<List<TimerTemplate>> retrieveAllTimerTemplates();
 
     @Insert
     void inserTemplate(TimerTemplate timerTemplate);

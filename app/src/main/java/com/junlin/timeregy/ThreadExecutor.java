@@ -21,38 +21,14 @@ public class ThreadExecutor {
     public static final Object OBJECT = new Object();
     private static  ThreadExecutor tInstance;
     private final Executor diskIO;
-    private final Executor uiThread;
 
-    private ThreadExecutor(Executor diskIO, Executor uiThread) {
-        this.diskIO = diskIO;
-        this.uiThread = uiThread;
-    }
+    private ThreadExecutor(Executor diskIO) { this.diskIO = diskIO;}
 
     public static ThreadExecutor getInstance() {
         if (tInstance != null) return tInstance;
-        synchronized (OBJECT) {
-            tInstance = new ThreadExecutor(
-                    Executors.newSingleThreadExecutor(), // ensures database transactions are performed in order
-                    new UIThreadExecutor());
-        }
+        synchronized (OBJECT) { tInstance = new ThreadExecutor(Executors.newSingleThreadExecutor());}
         return tInstance;
     }
 
-    // This class referenced the code from https://www.youtube.com/watch?v=c43ruIIZAMg&feature=emb_logo
-    // and https://stackoverflow.com/questions/16425146/runonuithread-in-fragment
-    public static class UIThreadExecutor implements Executor {
-        private Handler UIThreadHandler = new android.os.Handler(Looper.getMainLooper());
-        @Override
-        public void execute(Runnable command) {
-            UIThreadHandler.post(command);
-        }
-    }
-
-    public Executor getDiskIO() {
-        return diskIO;
-    }
-
-    public Executor getUiThread() {
-        return uiThread;
-    }
+    public Executor getDiskIO() { return diskIO; }
 }

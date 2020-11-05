@@ -1,4 +1,4 @@
-package com.junlin.timeregy.dataclass;
+package com.junlin.timeregy.data;
 
 import android.os.Parcel;
 import android.os.Parcelable;
