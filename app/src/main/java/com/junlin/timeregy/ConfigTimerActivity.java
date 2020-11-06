@@ -253,6 +253,7 @@ public class ConfigTimerActivity extends AppCompatActivity implements TimeDialog
             @Override
             public void run() {
                 tDb.timerTemplateDAO().inserTemplate(timerTemplate);
+//                tDb.timerTemplateDAO().updateTemplate(timerTemplate);
             }
         });
     }
