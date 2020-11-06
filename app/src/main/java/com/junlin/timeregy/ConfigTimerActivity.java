@@ -23,13 +23,14 @@ import com.junlin.timeregy.data.enums.Interruptions;
 import com.junlin.timeregy.data.enums.Tags;
 import com.junlin.timeregy.data.TempOption;
 import com.junlin.timeregy.data.utility.TimeConverter;
+import com.junlin.timeregy.ui.dialogs.RoundsDialog;
 import com.junlin.timeregy.ui.dialogs.TimeDialogFragment;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
 
-public class ConfigTimerActivity extends AppCompatActivity implements TimeDialogFragment.TimerDialogFragmentListener {
+public class ConfigTimerActivity extends AppCompatActivity implements TimeDialogFragment.TimerDialogFragmentListener, RoundsDialog.RoundsDialogFragmentListener {
 
     // Tag for logging
     private static final String TAG = ConfigTimerActivity.class.getSimpleName();
@@ -65,14 +66,14 @@ public class ConfigTimerActivity extends AppCompatActivity implements TimeDialog
     FloatingActionButton createFab;
 
     TimerTemplate timerTemplate;
-
+    FragmentManager manager;
     int opt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_config_timer);
-
+        manager = getSupportFragmentManager();
         // getting a database instance
         tDb = TimeregyDatabase.getAppDatabase(getApplicationContext());
 
@@ -171,6 +172,17 @@ public class ConfigTimerActivity extends AppCompatActivity implements TimeDialog
                 restTimeMinText.setText("0");
             }
         });
+
+        roundCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RoundsDialog roundsDialog = new RoundsDialog();
+                Bundle bundle = new Bundle();
+                bundle.putInt("rounds", Integer.parseInt(roundsText.getText().toString()));
+                roundsDialog.setArguments(bundle);
+                roundsDialog.show(manager, "roundsDialog");
+            }
+        });
     }
 
     private int[] convertTime(String minutes, String seconds) {
@@ -211,7 +223,6 @@ public class ConfigTimerActivity extends AppCompatActivity implements TimeDialog
 
     private void openSetWorkTimeDialog(int hours, int minutes, int seconds, int id){
         TimeDialogFragment timeDialogFragment = new TimeDialogFragment();
-        FragmentManager manager = getSupportFragmentManager();
         Bundle bundle = new Bundle();
         bundle.putInt("hours", hours);
         bundle.putInt("minutes", minutes);
@@ -222,9 +233,15 @@ public class ConfigTimerActivity extends AppCompatActivity implements TimeDialog
     }
 
     private void onCreateFabPressed(){
-        Boolean test = true;
-        if (timerNameInput.getText().toString().equals("")) {
+        boolean test = true;
+        if (Objects.requireNonNull(timerNameInput.getText()).toString().equals("")) {
             timerNameInput.setError(getResources().getString(R.string.empty_string_error));
+            test = false;
+        }
+
+        if (timerNameInput.getText().toString().length() > 20) {
+            timerNameInput.setError(getResources().getString(R.string.empty_string_error));
+            timerNameInput.setError(getResources().getString(R.string.string_too_long_error));
             test = false;
         }
 
@@ -280,6 +297,15 @@ public class ConfigTimerActivity extends AppCompatActivity implements TimeDialog
         return template;
     }
 
+    private void setDuration() {
+        durationText.setText(
+                TimeConverter.stringToDurationString(workTimeMinText.getText().toString(),
+                        restTimeMinText.getText().toString(),
+                        workTimeSecText.getText().toString(),
+                        restTimeSecText.getText().toString(),
+                        roundsText.getText().toString()));
+    }
+
     @Override
     public void setTexts(String minutes, String seconds, int id) {
         if (id == 0) {
@@ -289,5 +315,12 @@ public class ConfigTimerActivity extends AppCompatActivity implements TimeDialog
             restTimeMinText.setText(minutes);
             restTimeSecText.setText(seconds);
         }
+        setDuration();
+    }
+
+    @Override
+    public void setRoundTexts(int rounds) {
+        roundsText.setText(String.valueOf(rounds));
+        setDuration();
     }
 }

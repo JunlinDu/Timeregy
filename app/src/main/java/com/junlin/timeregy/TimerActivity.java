@@ -3,6 +3,7 @@ package com.junlin.timeregy;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.fragment.app.FragmentManager;
 
 import android.graphics.drawable.Drawable;
 import android.media.Image;
@@ -15,12 +16,17 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.junlin.timeregy.data.TimeregyDatabase;
+import com.junlin.timeregy.data.entity.Logs;
 import com.junlin.timeregy.data.entity.TimerTemplate;
 import com.junlin.timeregy.data.enums.Interruptions;
 import com.junlin.timeregy.data.enums.Tags;
 import com.junlin.timeregy.data.enums.TimerState;
+import com.junlin.timeregy.ui.dialogs.AlertDialog;
 
-public class TimerActivity extends AppCompatActivity {
+import java.util.Date;
+
+public class TimerActivity extends AppCompatActivity implements AlertDialog.AlertDialogFragmentListener{
 
     public static final String TAG = TimerActivity.class.getSimpleName();
 
@@ -47,6 +53,8 @@ public class TimerActivity extends AppCompatActivity {
     private int roundsLeftCounter;
     private Tags timerTag;
     private Interruptions timerInterruptions;
+    private TimeregyDatabase tDb;
+    FragmentManager manager;
 
 
     @Override
@@ -67,7 +75,8 @@ public class TimerActivity extends AppCompatActivity {
         roundsLeft = findViewById(R.id.rounds_left);
         workRestIcon = findViewById(R.id.work_rest_icon);
         wholeProgress = findViewById(R.id.whole_progress);
-
+        tDb = TimeregyDatabase.getAppDatabase(getApplicationContext());
+        manager = getSupportFragmentManager();
         setup();
 
         startPauseButton.setOnClickListener(new View.OnClickListener() {
@@ -115,8 +124,20 @@ public class TimerActivity extends AppCompatActivity {
             public void onFinish() {
                 currentState = TimerState.NOTSTARTED;
                 updateIntervalProgress(0);
-                // TODO Opens a Dialog
-                // TODO SAVE PROGRESS TO DATABASE
+                final Logs logs = new Logs(1, timerName.getText().toString(), new Date());
+
+                ThreadExecutor.getInstance().getDiskIO().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        tDb.logsDAO().insertLog(logs);
+                    }
+                });
+                AlertDialog alertDialog = new AlertDialog();
+                Bundle bundle = new Bundle();
+                bundle.putInt("message", R.string.count_down_finish_message);
+                alertDialog.setArguments(bundle);
+                alertDialog.show(manager, "Timer Complete Dialog");
+                setup();
             }
         }.start();
         currentState = TimerState.WORKING;
@@ -194,5 +215,10 @@ public class TimerActivity extends AppCompatActivity {
             // opens a dialog
         }
         super.onBackPressed();
+    }
+
+    @Override
+    public void execute() {
+
     }
 }

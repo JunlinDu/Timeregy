@@ -60,6 +60,7 @@ public class HomeFragment extends Fragment {
         ItemTouchHelper mIth = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             @Override
             public void onSwiped(@NonNull final RecyclerView.ViewHolder viewHolder, int direction) {
+
                 database.timerTemplateDAO().deleteTemplate(tempListAdapter.getTemplate(viewHolder.getAdapterPosition()));
             }
 

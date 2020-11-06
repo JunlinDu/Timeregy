@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,14 +17,13 @@ import com.junlin.timeregy.R;
 
 public class AlertDialog extends AppCompatDialogFragment {
 
-    Bundle bundle;
     private AlertDialog.AlertDialogFragmentListener listener;
+    Bundle bundle;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bundle = getArguments();
-        assert bundle != null;
     }
 
     @NonNull
@@ -33,8 +33,12 @@ public class AlertDialog extends AppCompatDialogFragment {
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getActivity(), R.style.Dialog);
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_alert_dialog, null);
+        TextView message = view.findViewById(R.id.alert_Text);
+        assert bundle!= null;
+        message.setText(bundle.getInt("message"));
+
         builder.setView(view)
-                .setTitle("Time")
+                .setTitle("Message")
                 .setPositiveButton(R.string.dialog_positive, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
