@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.TintTypedArray;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.junlin.timeregy.ConfigTimerActivity;
@@ -62,6 +63,7 @@ public class UserTempListAdapter extends RecyclerView.Adapter<UserTempListAdapte
         ImageView tagIcon;
         TextView round;
         Button startButton;
+        Button editButton;
         ImageView image;
 
         public ViewHolder(@NonNull View itemView) {
@@ -73,6 +75,7 @@ public class UserTempListAdapter extends RecyclerView.Adapter<UserTempListAdapte
             this.round = itemView.findViewById(R.id.minutes_text);
             this.startButton = itemView.findViewById(R.id.temp_start_button);
             this.image = itemView.findViewById(R.id.template_tag_image);
+            this.editButton = itemView.findViewById(R.id.edit_button);
         }
 
         void bind(final TimerTemplate timerTemplate) {
@@ -94,7 +97,7 @@ public class UserTempListAdapter extends RecyclerView.Adapter<UserTempListAdapte
                     break;
             }
 
-            String roundMin = String.valueOf(calculateMinute(timerTemplate.workTimeInSec, timerTemplate.restTimeInSec, timerTemplate.rounds)) + " mins";
+            String roundMin = calculateMinute(timerTemplate.workTimeInSec, timerTemplate.restTimeInSec, timerTemplate.rounds) + " mins";
             round.setText(roundMin);
             // rounds have not been setup
             startButton.setOnClickListener(new View.OnClickListener() {
@@ -102,6 +105,16 @@ public class UserTempListAdapter extends RecyclerView.Adapter<UserTempListAdapte
                 public void onClick(View v) {
                     Intent intent = new Intent(itemView.getContext(), TimerActivity.class);
                     intent.putExtra("Data", timerTemplate);
+                    itemView.getContext().startActivity(intent);
+                }
+            });
+
+            editButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(itemView.getContext(), ConfigTimerActivity.class);
+                    intent.putExtra("Data", timerTemplate);
+                    intent.putExtra("Option", 1);
                     itemView.getContext().startActivity(intent);
                 }
             });

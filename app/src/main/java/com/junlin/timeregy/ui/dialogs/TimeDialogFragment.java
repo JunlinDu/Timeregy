@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.NumberPicker;
 import com.junlin.timeregy.R;
 import com.junlin.timeregy.data.enums.TimerPicker;
+import com.junlin.timeregy.data.utility.TimeConverter;
 
 public class TimeDialogFragment extends AppCompatDialogFragment {
 
@@ -58,9 +59,9 @@ public class TimeDialogFragment extends AppCompatDialogFragment {
                 .setPositiveButton(R.string.dialog_positive, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String minutes = calculateTotalTime(hoursPicker.getValue(), minutesPicker.getValue(), secondsPicker.getValue());
+                        String minutes = TimeConverter.calculateTotalTimeToString(hoursPicker.getValue(), minutesPicker.getValue(), secondsPicker.getValue());
                         String seconds;
-                        if (calculateSec(secondsPicker.getValue()) == 0) seconds = String.valueOf(secondsPicker.getValue());
+                        if (TimeConverter.calculateSec(secondsPicker.getValue()) == 0) seconds = String.valueOf(secondsPicker.getValue());
                         else seconds = "0";
                         listener.setTexts(minutes, seconds, id);
                     }
@@ -123,14 +124,6 @@ public class TimeDialogFragment extends AppCompatDialogFragment {
                 });
                 break;
         }
-    }
-
-    private String calculateTotalTime(int hours, int minutes, int seconds) {
-        return String.valueOf(hours * 60 + minutes + calculateSec(seconds));
-    }
-
-    private int calculateSec(int seconds) {
-        return seconds == 60? 1:0;
     }
 
     @Override

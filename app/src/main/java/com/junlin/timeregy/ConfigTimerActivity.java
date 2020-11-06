@@ -22,10 +22,12 @@ import com.junlin.timeregy.data.entity.TimerTemplate;
 import com.junlin.timeregy.data.enums.Interruptions;
 import com.junlin.timeregy.data.enums.Tags;
 import com.junlin.timeregy.data.TempOption;
+import com.junlin.timeregy.data.utility.TimeConverter;
 import com.junlin.timeregy.ui.dialogs.TimeDialogFragment;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 public class ConfigTimerActivity extends AppCompatActivity implements TimeDialogFragment.TimerDialogFragmentListener {
 
@@ -62,7 +64,9 @@ public class ConfigTimerActivity extends AppCompatActivity implements TimeDialog
     TextInputEditText userRemarks;
     FloatingActionButton createFab;
 
-    TempOption tempOption;
+    TimerTemplate timerTemplate;
+
+    int opt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +77,8 @@ public class ConfigTimerActivity extends AppCompatActivity implements TimeDialog
         tDb = TimeregyDatabase.getAppDatabase(getApplicationContext());
 
         Intent intent = getIntent();
-        tempOption = (TempOption) intent.getParcelableExtra("Data");
+        timerTemplate = (TimerTemplate) intent.getParcelableExtra("Data");
+        opt = intent.getIntExtra("Option", 0);
 
         // stop soft keyboard from showing automatically when focus is changed
         // reference: https://stackoverflow.com/questions/5221622/how-to-stop-soft-keyboard-showing-automatically-when-focus-is-changed-onstart-e/5484683
@@ -108,18 +113,28 @@ public class ConfigTimerActivity extends AppCompatActivity implements TimeDialog
             if (i != 0) intCardImages.get(i).setVisibility(View.INVISIBLE);
         }
 
-        if (tempOption != null) {
-            timerNameInput.setText(this.tempOption.titleRes);
-            if (this.tempOption.Interval) intervalCheckBox.setChecked(true);
-            workTimeMinText.setText(String.valueOf(this.tempOption.workMin));
-            workTimeSecText.setText(String.valueOf(this.tempOption.workSec));
-            restTimeMinText.setText(String.valueOf(this.tempOption.restMin));
-            restTimeSecText.setText(String.valueOf(this.tempOption.resSec));
-            roundsText.setText(String.valueOf(this.tempOption.rounds));
-            durationText.setText(String.valueOf(this.tempOption.duration));
-            RadioButton rb = (RadioButton) tags.getChildAt(this.tempOption.tag);
+
+        if (timerTemplate != null) {
+            timerNameInput.setText(timerTemplate.name);
+
+            if (timerTemplate.interval) intervalCheckBox.setChecked(true);
+            int workMin = TimeConverter.intToMin(timerTemplate.workTimeInSec);
+            int workSec = TimeConverter.toRestSecond(timerTemplate.workTimeInSec);
+            int restMin = TimeConverter.intToMin(timerTemplate.restTimeInSec);
+            int restSec = TimeConverter.toRestSecond(timerTemplate.restTimeInSec);
+            int duration = TimeConverter.toDuration(workMin, restMin, workSec, restSec, timerTemplate.rounds);
+
+            workTimeMinText.setText(String.valueOf(workMin));
+            workTimeSecText.setText(String.valueOf(workSec));
+
+            restTimeMinText.setText(String.valueOf(restMin));
+            restTimeSecText.setText(String.valueOf(restSec));
+
+            roundsText.setText(String.valueOf(timerTemplate.rounds));
+            durationText.setText(String.valueOf(duration));
+            RadioButton rb = (RadioButton) tags.getChildAt(timerTemplate.tag);
             rb.setChecked(true);
-            setInterrupationCard(interruptionsCards.get(this.tempOption.interruptions), this.tempOption.interruptions);
+            setInterrupationCard(interruptionsCards.get(timerTemplate.interruptions), timerTemplate.interruptions);
         }
 
         createFab = findViewById(R.id.fab);
@@ -228,38 +243,41 @@ public class ConfigTimerActivity extends AppCompatActivity implements TimeDialog
     }
 
     private void createRecord() {
-        // UserId id set to 1 temporarily for testing purpose
-        int uid = 1;
 
-        int workSeconds = toSeconds(workTimeMinText.getText().toString(), workTimeSecText.getText().toString());
-        int restSeconds = toSeconds(restTimeMinText.getText().toString(), restTimeSecText.getText().toString());
+        // UserId id set to 1 temporarily
+
+        int workSeconds = TimeConverter.stringToSeconds(workTimeMinText.getText().toString(), workTimeSecText.getText().toString());
+        int restSeconds = TimeConverter.stringToSeconds(restTimeMinText.getText().toString(), restTimeSecText.getText().toString());
 
         // Reference: https://stackoverflow.com/questions/6440259/how-to-get-the-selected-index-of-a-radiogroup-in-android
         int rId= tags.getCheckedRadioButtonId();
         View radioButton = tags.findViewById(rId);
         Tags tag = Tags.toTag(tags.indexOfChild(radioButton));
         Date date = new Date();
-        final TimerTemplate timerTemplate =
-                new TimerTemplate(uid,
-                        timerNameInput.getText().toString(),
-                        intervalCheckBox.isChecked(), workSeconds, restSeconds,
-                        Integer.parseInt(roundsText.getText().toString()),
-                        tag.getValue(), currentInterruptionsMode.getValue(),
-                        userRemarks.getText().toString(), date);
+        setTimerTemplate(this.timerTemplate, workSeconds, restSeconds, tag, date);
 
         // This is referenced from https://www.youtube.com/watch?time_continue=223&v=c43ruIIZAMg&feature=emb_logo
         // this opens a diskIO thread for the database to
         ThreadExecutor.getInstance().getDiskIO().execute(new Runnable() {
             @Override
             public void run() {
-                tDb.timerTemplateDAO().inserTemplate(timerTemplate);
-//                tDb.timerTemplateDAO().updateTemplate(timerTemplate);
+                if (opt == 0) tDb.timerTemplateDAO().inserTemplate(timerTemplate);
+                else tDb.timerTemplateDAO().updateTemplate(timerTemplate);
             }
         });
     }
 
-    private int toSeconds(String minutes, String seconds) {
-        return Integer.parseInt(minutes) * 60 + Integer.parseInt(seconds);
+    private TimerTemplate setTimerTemplate(TimerTemplate template, int workSeconds, int restSeconds, Tags tags, Date date) {
+        template.name = Objects.requireNonNull(timerNameInput.getText()).toString();
+        template.interval = intervalCheckBox.isChecked();
+        template.workTimeInSec = workSeconds;
+        template.restTimeInSec = restSeconds;
+        template.rounds = Integer.parseInt(roundsText.getText().toString());
+        template.tag = tags.getValue();
+        template.interruptions = currentInterruptionsMode.getValue();
+        template.remark = Objects.requireNonNull(userRemarks.getText()).toString();
+        template.dateCreated = date;
+        return template;
     }
 
     @Override

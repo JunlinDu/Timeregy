@@ -1,5 +1,6 @@
 package com.junlin.timeregy.adapters;
 
+import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,8 +15,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.junlin.timeregy.ConfigTimerActivity;
 import com.junlin.timeregy.R;
 import com.junlin.timeregy.data.TempOption;
+import com.junlin.timeregy.data.entity.TimerTemplate;
+import com.junlin.timeregy.data.utility.TimeConverter;
 
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -76,8 +81,15 @@ public class TempOptionsListAdapter extends RecyclerView.Adapter<TempOptionsList
             parentLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(itemView.getContext(), ConfigTimerActivity.class);
-                    intent.putExtra("Data", tempOption);
+                    Context context = itemView.getContext();
+                    Intent intent = new Intent(context, ConfigTimerActivity.class);
+                    TimerTemplate timerTemplate = new TimerTemplate(
+                            1, context.getResources().getString(tempOption.titleRes), tempOption.Interval,
+                            TimeConverter.intToSeconds(tempOption.workMin, tempOption.workSec),
+                            TimeConverter.intToSeconds(tempOption.restMin, tempOption.resSec),
+                            tempOption.rounds, tempOption.tag, tempOption.interruptions, null, new Date());
+                    intent.putExtra("Data", timerTemplate);
+                    intent.putExtra("Option", 0);
                     itemView.getContext().startActivity(intent);
                 }
             });

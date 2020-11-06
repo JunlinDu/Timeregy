@@ -60,6 +60,7 @@
     <string name="view_button">VIEW</string>
     <string name="pause_button">PAUSE</string>
     <string name="cancel_button">CANCEL</string>
+    <string name="edit_button">EDIT</string>
 
     <string name="working">Working</string>
     <string name="resting">Resting</string>

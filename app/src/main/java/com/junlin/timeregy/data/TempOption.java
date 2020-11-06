@@ -3,6 +3,8 @@ package com.junlin.timeregy.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.junlin.timeregy.data.utility.TimeConverter;
+
 public class TempOption implements Parcelable {
     public int titleRes;
     public int descRes;
@@ -13,7 +15,6 @@ public class TempOption implements Parcelable {
     public int restMin;
     public int resSec;
     public int rounds;
-    public int duration;
     public int tag;
     public int interruptions;
 
@@ -29,7 +30,6 @@ public class TempOption implements Parcelable {
         this.rounds = rounds;
         this.tag = tag;
         this.interruptions = interruptions;
-        this.duration = (workMin + restMin) * rounds + (workSec + resSec) * rounds / 60;
     }
 
     protected TempOption(Parcel in) {
@@ -42,7 +42,6 @@ public class TempOption implements Parcelable {
         restMin = in.readInt();
         resSec = in.readInt();
         rounds = in.readInt();
-        duration = in.readInt();
         tag  = in.readInt();
         interruptions = in.readInt();
     }
@@ -74,7 +73,6 @@ public class TempOption implements Parcelable {
         dest.writeInt(restMin);
         dest.writeInt(resSec);
         dest.writeInt(rounds);
-        dest.writeInt(duration);
         dest.writeInt(tag);
         dest.writeInt(interruptions);
     }
